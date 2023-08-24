@@ -8,7 +8,7 @@ create table Books
 (ID int primary key identity(1,1)
 ,title varchar(100)not null
 ,author varchar(100) not null
-,pub_year int 
+,pub_year int
 ,loan_type int not null
 )
 
