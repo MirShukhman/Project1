@@ -112,18 +112,76 @@ if __name__=='__main__':
                 # Call func from the class, give func the inputs as parameters
                 books.add_book(title,author,year,loan_type)
 
-
+            # Func to create new loan
+            # Asks from user to input loaning customer's ID and loaned book ID
+            # Makes sure the input is integer
+            # Calls for "find_customer_BY_ID" func from customers class
+            # If such customer not found, aborts func
+            # If found, asks for user's approval that indeed correct customer was selected- if not, aborts func
+            # Same steps for book's ID and using "find_book_BY_ID" func from books class
+            # If both ID's valid and approved by user, calls for "loan_book" func from loans class
+                # and gives it both ID's as parameters
             elif choice == '3':
-                custID=("Enter ID of the loaning Customer: ")
-                bookID = ("Enter ID of the Book being loaned: ")
-                loans.loan_book(custID,bookID)
-                print ("")#booktitle loaned to custname sucseffuly. expected return date:
+                try:
+                    # Receives custID as input and calls for find cust by ID func
+                    custID = int(input("Enter loaning customer ID: "))
+                    found_cust = customers.find_customer_BY_ID(custID)
+                    if not found_cust:  # If not found - aborts func
+                        return
+
+                    else: # If found asks for user's approval of correct cust
+                        approval = input("Correct customer (yes/no)? ")
+                        if approval.lower() != "yes": # If not approved - aborts func
+                            print("Customer not approved")
+                            return
+
+                    # Recives bookID as input and calls for find book by ID func
+                    bookID= int(input("Enter loaned book ID: "))
+                    found_book = books.find_book_BY_ID(bookID)
+                    if not found_book: # If not found - aborts func
+                        return
+
+                    else: # If found asks for user's approval of correct book
+                        approval = input("Correct book (yes/no)? ")
+                        if approval.lower() != "yes": # If not approved - aborts func
+                            print("Book not approved")
+                            return
+
+                    loans.loan_book(custID,bookID)  # Calls for "loan_book" func and gives it both ID's as parameters
+
+                # Error handling for input is not int
+                except ValueError:
+                    print("Invalid input: ID's must be integers only.")
 
 
+            # Func to add return date to existing loan
+            # Asks from user to input loaned book ID
+            # Makes sure the input is integer
+            # Calls for "find_book_BY_ID" func from books class
+            # If such book not found, aborts func
+            # If found, asks for user's approval that indeed correct book was selected- if not, aborts func
+            # If ID valid and book approved by user, calls for "return_book" func from loans class
+                # and gives it book's ID as parameter
             elif choice == '4':
-                bookID = ("Enter ID of the Book being returned: ")
-                loans.return_book(bookID)
-                print("")#book title returned sucsefully.
+                try:
+                    # Receives bookID as input and calls for find book by ID func
+                    bookID = int(input("Enter loaned book ID: "))
+                    found_book = books.find_book_BY_ID(bookID)
+                    if not found_book:  # If not found - aborts func
+                        return
+
+                    else:  # If found asks for user's approval of correct book
+                        approval = input("Correct book (yes/no)? ")
+                        if approval.lower() != "yes":  # If not approved - aborts func
+                            print("Book not approved")
+                            return
+
+                    # Calls for "return_book" func and gives it book's ID as parameter
+                    loans.return_book(bookID)
+
+                # Error handling for input is not int
+                except ValueError:
+                    print("Invalid input: ID's must be integers only.")
 
 
             # Func to show all of library's Books
@@ -138,8 +196,11 @@ if __name__=='__main__':
                customers.show_all_customers()
 
 
+            # Func to show all of library's loans
+            # Calls for "show_all_loans" func from Loans class
             elif choice == '7':
                 loans.show_all_loans()
+
 
             elif choice == '8':
                 loans.LATE()
@@ -165,21 +226,32 @@ if __name__=='__main__':
 
             # Func to delete a book using book's ID
             # Asks from user to input the book's ID
+            # Makes sure input is integer
             # Calls for "remove_book" func from Books class and gives it the ID num inputted by the user
             elif choice == '11':
-                ID=input("Enter Book ID for removal: ")
-                # Call func from the class, give func the input as parameter
-                books.remove_book(ID)
+                try:
+                    ID=int(input("Enter Book ID for removal: "))
+                    # Call func from the class, give func the input as parameter
+                    books.remove_book(ID)
+
+                # Error handling for input is not int
+                except ValueError:
+                    print("Invalid input: ID's must be integers only.")
 
 
             # Func to delete a customer using customer's ID
             # Asks from user to input the customer's ID
+            # Makes sure input is integer
             # Calls for "remove_customer" func from Customers class and gives it the ID num inputted by the user
             elif choice == '12':
-                ID=input("Enter Customer ID for removal: ")
-                # Call func from the class, give func the input as parameter
-                customers.remove_customer(ID)
+                try:
+                    ID=input("Enter Customer ID for removal: ")
+                    # Call func from the class, give func the input as parameter
+                    customers.remove_customer(ID)
 
+                # Error handling for input is not int
+                except ValueError:
+                    print("Invalid input: ID's must be integers only.")
 
             # Func to exit the program
             # Breaks the loop

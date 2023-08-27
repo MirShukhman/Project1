@@ -133,6 +133,43 @@ class Books:
             print('An ERROR has occurred:', Exception)
 
 
+    def find_book_BY_ID(self,ID):
+
+        """
+        Name: Mir Shukhman
+        Date: 27.08.23
+        The func allows to find a book from the table "Books" of the SQL Database, by the book's ID.
+        The input requires the book's ID.
+        If book by the given ID found, will show the book's details and return them
+        If not, will show "not found" message and return None
+        """
+
+        try:
+            self.conn # Establishing connection to SQL server
+            q = 'select * from Books where ID=?'
+            self.cursor.execute(q, (ID,))
+            found=self.cursor.fetchall()  # Looking & Getting the book's details with matching ID num
+
+            # If book with given ID not found, returns "not found" message
+            if not found:
+                print("No book found with the ID:", ID)
+
+                return None  # Returns None for book not found
+
+            # Returns the found book's details to the user:
+            else:
+                print ("Book Found:")
+                for i in found:
+                    print(f'Book ID: {i[0]}, Title: {i[1]}, Author: {i[2]}, Publication Year: {i[3]}, Loan Type: {i[4]}')
+
+                return found  # Returns the book found
+
+            self.conn.close()  # Closing the connection with the server
+
+        except Exception:
+            print ('An ERROR has occurred:',Exception)
+
+
     def show_all_books(self):
 
         """

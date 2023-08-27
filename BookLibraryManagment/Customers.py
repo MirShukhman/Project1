@@ -70,7 +70,7 @@ class Customers:
 
             else:
                 # Returns the found customer's details to the user:
-                # making sure the one user wanted to delete was picked
+                # Making sure the one user wanted to delete was picked
                 while True:
                     print ("Is this the customer you would like to remove?")
                     for i in found:
@@ -96,6 +96,43 @@ class Customers:
                         print('Invalid option. Try again:')
 
             self.conn.close() # Closing the connection with the server
+
+        except Exception:
+            print ('An ERROR has occurred:',Exception)
+
+
+    def find_customer_BY_ID(self,ID):
+
+        """
+        Name: Mir Shukhman
+        Date: 27.08.23
+        The func allows to find a customer from the table "Customers" of the SQL Database, by the customer's ID.
+        The input requires the customer's ID.
+        If customer by the given ID found, will show the customer details and return them
+        If not, will show "not found" message and return None
+        """
+
+        try:
+            self.conn # Establishing connection to SQL server
+            q = 'select * from Customers where ID=?'
+            self.cursor.execute(q, (ID,))
+            found=self.cursor.fetchall()  # Looking & Getting the customer's details with matching ID num
+
+            # If customer with given ID not found, returns "not found" message
+            if not found:
+                print("No customer found with the ID:", ID)
+
+                return None  # Returns None for cust not found
+
+            # Returns the found customer's details to the user:
+            else:
+                print ("Customer Found:")
+                for i in found:
+                    print(f'Customer ID: {i[0]}, Name: {i[1]}, City: {i[2]}, Age: {i[3]}')
+
+                return found  # Returns the cust found
+
+            self.conn.close()  # Closing the connection with the server
 
         except Exception:
             print ('An ERROR has occurred:',Exception)
@@ -163,3 +200,4 @@ class Customers:
 
         except Exception:
             print ('An ERROR has occurred:',Exception)
+
