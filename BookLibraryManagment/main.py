@@ -8,7 +8,7 @@ if __name__=='__main__':
     def main():
 
         """
-        Name: Mir Shukhman
+        Name: Mir Shukhman1
         Date: 24.08.23
         The func creates the main menu for the Book Library Manager.
         Displays the menu to the user & Allows the user to pick the desired function.
@@ -28,19 +28,19 @@ if __name__=='__main__':
             # Shows the main menu
             print ('\n'
                    'Please choose the desired function: \n'
-                  '1. Add a new customer\n'
-                  '2. Add a new book\n'
-                  '3. Loan a book\n'
-                  '4. Return a book\n'
-                  '5. Display all books\n'
-                  '6. Display all customers\n'
-                  '7. Display all loans\n'
-                  '8. Display late loans\n'
-                  '9. Find book by title\n'
-                  '10. Find customer by name\n'
-                  '11. Remove book\n'
-                  '12. Remove customer\n'
-                  '13. Exit\n')
+                   '1. Add a new customer\n'
+                   '2. Add a new book\n'
+                   '3. Loan a book\n'
+                   '4. Return a book\n'
+                   '5. Display all books\n'
+                   '6. Display all customers\n'
+                   '7. Display all loans\n'
+                   '8. Display late loans\n'
+                   '9. Find book by title\n'
+                   '10. Find customer by name\n'
+                   '11. Remove book\n'
+                   '12. Remove customer\n'
+                   '13. Exit\n')
 
             # User chooses func
             choice=input('Enter Number of the desired function: ')
@@ -112,6 +112,7 @@ if __name__=='__main__':
                 # Call func from the class, give func the inputs as parameters
                 books.add_book(title,author,year,loan_type)
 
+
             # Func to create new loan
             # Asks from user to input loaning customer's ID and loaned book ID
             # Makes sure the input is integer
@@ -120,38 +121,41 @@ if __name__=='__main__':
             # If found, asks for user's approval that indeed correct customer was selected- if not, aborts func
             # Same steps for book's ID and using "find_book_BY_ID" func from books class
             # If both ID's valid and approved by user, calls for "loan_book" func from loans class
-                # and gives it both ID's as parameters
+            # and gives it both ID's as parameters
             elif choice == '3':
-                try:
-                    # Receives custID as input and calls for find cust by ID func
-                    custID = int(input("Enter loaning customer ID: "))
-                    found_cust = customers.find_customer_BY_ID(custID)
-                    if not found_cust:  # If not found - aborts func
-                        return
+                while True:
+                    try:
+                        # Receives custID as input and calls for find cust by ID func
+                        custID = int(input("Enter loaning customer ID: "))
+                        found_cust = customers.find_customer_BY_ID(custID)
+                        if not found_cust:  # If not found - aborts func
+                            break
 
-                    else: # If found asks for user's approval of correct cust
-                        approval = input("Correct customer (yes/no)? ")
-                        if approval.lower() != "yes": # If not approved - aborts func
-                            print("Customer not approved")
-                            return
+                        else: # If found asks for user's approval of correct cust
+                            approval = input("Correct customer (yes/no)? ")
+                            if approval.lower() != "yes": # If not approved - aborts func
+                                print("Customer not approved")
+                                break
 
-                    # Recives bookID as input and calls for find book by ID func
-                    bookID= int(input("Enter loaned book ID: "))
-                    found_book = books.find_book_BY_ID(bookID)
-                    if not found_book: # If not found - aborts func
-                        return
+                        # Recives bookID as input and calls for find book by ID func
+                        bookID= int(input("Enter loaned book ID: "))
+                        found_book = books.find_book_BY_ID(bookID)
+                        if not found_book: # If not found - aborts func
+                            break
 
-                    else: # If found asks for user's approval of correct book
-                        approval = input("Correct book (yes/no)? ")
-                        if approval.lower() != "yes": # If not approved - aborts func
-                            print("Book not approved")
-                            return
+                        else: # If found asks for user's approval of correct book
+                            approval = input("Correct book (yes/no)? ")
+                            if approval.lower() != "yes": # If not approved - aborts func
+                                print("Book not approved")
+                                break
 
-                    loans.loan_book(custID,bookID)  # Calls for "loan_book" func and gives it both ID's as parameters
+                            else:
+                                # Calls for "loan_book" func and gives it both ID's as parameters
+                                loans.loan_book(custID,bookID)
 
-                # Error handling for input is not int
-                except ValueError:
-                    print("Invalid input: ID's must be integers only.")
+                    # Error handling for input is not int
+                    except ValueError:
+                        print("Invalid input: ID's must be integers only.")
 
 
             # Func to add return date to existing loan
@@ -161,27 +165,31 @@ if __name__=='__main__':
             # If such book not found, aborts func
             # If found, asks for user's approval that indeed correct book was selected- if not, aborts func
             # If ID valid and book approved by user, calls for "return_book" func from loans class
-                # and gives it book's ID as parameter
+            # and gives it book's ID as parameter
             elif choice == '4':
-                try:
-                    # Receives bookID as input and calls for find book by ID func
-                    bookID = int(input("Enter loaned book ID: "))
-                    found_book = books.find_book_BY_ID(bookID)
-                    if not found_book:  # If not found - aborts func
-                        return
+                while True:
+                    try:
+                        # Receives bookID as input and calls for find book by ID func
+                        bookID = int(input("Enter loaned book ID: "))
+                        found_book = books.find_book_BY_ID(bookID)
 
-                    else:  # If found asks for user's approval of correct book
-                        approval = input("Correct book (yes/no)? ")
-                        if approval.lower() != "yes":  # If not approved - aborts func
-                            print("Book not approved")
-                            return
+                        if not found_book:  # If not found - aborts func
+                            break
 
-                    # Calls for "return_book" func and gives it book's ID as parameter
-                    loans.return_book(bookID)
+                        else:  # If found asks for user's approval of correct book
+                            approval = input("Correct book (yes/no)? ")
 
-                # Error handling for input is not int
-                except ValueError:
-                    print("Invalid input: ID's must be integers only.")
+                            if approval.lower() != "yes":  # If not approved - aborts func
+                                print("Book not approved")
+                                break
+
+                            else:
+                                # Calls for "return_book" func and gives it book's ID as parameter
+                                loans.return_book(bookID)
+
+                    # Error handling for input is not int
+                    except ValueError:
+                        print("Invalid input: ID's must be integers only.")
 
 
             # Func to show all of library's Books
@@ -193,7 +201,7 @@ if __name__=='__main__':
             # Func to show all of library's customers
             # Calls for "show_all_customers" func from Customers class
             elif choice == '6':
-               customers.show_all_customers()
+                customers.show_all_customers()
 
 
             # Func to show all of library's loans
@@ -202,6 +210,8 @@ if __name__=='__main__':
                 loans.show_all_loans()
 
 
+            # Func to show all of library's LATE loans
+            # Calls for "LATE" func from Loans class
             elif choice == '8':
                 loans.LATE()
 
@@ -210,7 +220,7 @@ if __name__=='__main__':
             # Asks from user to input the book's title
             # Calls for "find_book" func from Books class and gives it the title inputted by the user
             elif choice == '9':
-                title=input("Enter Book Title: ")
+                title = input("Enter Book Title: ")
                 # Call func from the class, give func the input as parameter
                 books.find_book(title)
 
@@ -219,7 +229,7 @@ if __name__=='__main__':
             # Asks from user to input the customer's name
             # Calls for "find_customer" func from Customers class and gives it the name inputted by the user
             elif choice == '10':
-                name=input('Enter Customer Name: ')
+                name = input('Enter Customer Name: ')
                 # Call func from the class, give func the input as parameter
                 customers.find_customer(name)
 
@@ -230,7 +240,7 @@ if __name__=='__main__':
             # Calls for "remove_book" func from Books class and gives it the ID num inputted by the user
             elif choice == '11':
                 try:
-                    ID=int(input("Enter Book ID for removal: "))
+                    ID = int(input("Enter Book ID for removal: "))
                     # Call func from the class, give func the input as parameter
                     books.remove_book(ID)
 
@@ -245,13 +255,14 @@ if __name__=='__main__':
             # Calls for "remove_customer" func from Customers class and gives it the ID num inputted by the user
             elif choice == '12':
                 try:
-                    ID=input("Enter Customer ID for removal: ")
+                    ID = int(input("Enter Customer ID for removal: "))
                     # Call func from the class, give func the input as parameter
                     customers.remove_customer(ID)
 
                 # Error handling for input is not int
                 except ValueError:
                     print("Invalid input: ID's must be integers only.")
+
 
             # Func to exit the program
             # Breaks the loop

@@ -19,31 +19,34 @@ class Customers:
         self.cursor = self.conn.cursor()
 
 
+    def __del__(self):
+        # Closing the connection when the instance is destroyed
+        self.conn.close()
+
+
     def add_customer(self,name,city,age):
 
-         """
-         Name: Mir Shukhman
-         Date: 23.08.23
-         The func allows to add a new customer to the table "Customers" of the SQL Database.
-         The input requires the new customer's detains: name, city and age.
-         If the action successful, will print out approval and new customer's ID number
-         """
+        """
+        Name: Mir Shukhman
+        Date: 23.08.23
+        The func allows to add a new customer to the table "Customers" of the SQL Database.
+        The input requires the new customer's detains: name, city and age.
+        If the action successful, will print out approval and new customer's ID number
+        """
 
-         try:
-            self.conn  # Establishing connection to SQL server
-            q = 'insert into Customers (name,city,age) values (?,?,?)'
+        try:
+            q = 'INSERT into Customers (name,city,age) VALUES (?,?,?)'
             self.cursor.execute(q, (name, city, age))
             self.conn.commit()   # Adding the new customer to the database
 
             # Getting&Returning new customer's ID num to be printed to the user
-            self.cursor.execute('select SCOPE_IDENTITY()')
-            new_cus_ID = self.cursor.fetchone()[0]
-            print(name, "has been added successfully to the customer database, ID num:", new_cus_ID)
+            q = 'select ID from Customers where name=? and city=? and age=?'
+            self.cursor.execute(q, (name, city, age))
+            new_cus_id = self.cursor.fetchone()[0]
+            print(name, "has been added successfully to the customer database, ID num:", new_cus_id)
 
-            self.conn.close()  # Closing the connection with the server
-
-         except Exception:
-            print ('An ERROR has occurred:',Exception)
+        except Exception as e:
+            print('An ERROR has occurred:', str(e))
 
 
     def remove_customer(self,ID):
@@ -59,7 +62,6 @@ class Customers:
         """
 
         try:
-            self.conn # Establishing connection to SQL server
             q = 'select * from Customers where ID=?'
             self.cursor.execute(q, (ID,))
             found=self.cursor.fetchall()  # Looking & Getting the customer's details with matching ID num
@@ -95,10 +97,8 @@ class Customers:
                     else:
                         print('Invalid option. Try again:')
 
-            self.conn.close() # Closing the connection with the server
-
-        except Exception:
-            print ('An ERROR has occurred:',Exception)
+        except Exception as e:
+            print('An ERROR has occurred:', str(e))
 
 
     def find_customer_BY_ID(self,ID):
@@ -113,10 +113,9 @@ class Customers:
         """
 
         try:
-            self.conn # Establishing connection to SQL server
             q = 'select * from Customers where ID=?'
             self.cursor.execute(q, (ID,))
-            found=self.cursor.fetchall()  # Looking & Getting the customer's details with matching ID num
+            found = self.cursor.fetchall()  # Looking & Getting the customer's details with matching ID num
 
             # If customer with given ID not found, returns "not found" message
             if not found:
@@ -132,10 +131,8 @@ class Customers:
 
                 return found  # Returns the cust found
 
-            self.conn.close()  # Closing the connection with the server
-
-        except Exception:
-            print ('An ERROR has occurred:',Exception)
+        except Exception as e:
+            print('An ERROR has occurred:', str(e))
 
 
     def find_customer(self,name):
@@ -150,8 +147,7 @@ class Customers:
         """
 
         try:
-            self.conn # Establishing connection to SQL server
-            q=('select * from Customers where name=?')
+            q = ('select * from Customers where name=?')
             self.cursor.execute(q,(name,))
             found = self.cursor.fetchall() # Looking & Getting the customer's details with the given name
 
@@ -165,10 +161,8 @@ class Customers:
                     print("Customer found:")
                     print(f'Customer ID: {i[0]}, Name: {i[1]}, City: {i[2]}, Age: {i[3]}')
 
-            self.conn.close() # Closing the connection with the server
-
-        except Exception:
-            print ('An ERROR has occurred:',Exception)
+        except Exception as e:
+            print('An ERROR has occurred:', str(e))
 
 
     def show_all_customers(self):
@@ -181,7 +175,6 @@ class Customers:
         """
 
         try:
-            self.conn # Establishing connection to SQL server
             q="Select * from Customers"
             self.cursor.execute(q)
             customers= self.cursor.fetchall() # Getting customer data
@@ -196,8 +189,5 @@ class Customers:
                 for i in customers:
                     print(f'Customer ID: {i[0]}, Name: {i[1]}, City: {i[2]}, Age: {i[3]}')
 
-            self.conn.close() # Closing the connection with the server
-
-        except Exception:
-            print ('An ERROR has occurred:',Exception)
-
+        except Exception as e:
+            print('An ERROR has occurred:', str(e))

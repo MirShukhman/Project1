@@ -19,6 +19,11 @@ class Books:
         self.cursor = self.conn.cursor()
 
 
+    def __del__(self):
+        # Closing the connection when the instance is destroyed
+        self.conn.close()
+
+
     def add_book(self,title,author,pub_year,loan_type):
 
         """
@@ -30,20 +35,18 @@ class Books:
         """
 
         try:
-            self.conn # Establishing connection to SQL server
-            q = 'insert into Books (title,autor,pub_year,loan_type) values (?,?,?,?)'
+            q = 'INSERT into Books (title, author, pub_year, loan_type) VALUES (?,?,?,?)'
             self.cursor.execute(q, (title,author,pub_year,loan_type))
-            self.conn.commit()  # Adding the new book to the database
+            self.conn.commit()  # Adding the new customer to the database
 
-            # Getting&Returning new book's ID num to be printed to the user
-            self.cursor.execute('select SCOPE_IDENTITY()')
-            new_book_ID = self.cursor.fetchone()[0]
-            print(title,"by", author, "has been added successfully to the books database, ID num:", new_book_ID)
+            # Getting&Returning new customer's ID num to be printed to the user
+            q = 'select ID from Books where title=? and author=? and pub_year=? and loan_type=?'
+            self.cursor.execute(q, (title,author,pub_year,loan_type))
+            new_book_id = self.cursor.fetchone()[0]
+            print(title, "by", author, "has been added successfully to the books database, ID num:",new_book_id)
 
-            self.conn.close()  # Closing the connection with the server
-
-        except Exception:
-            print('An ERROR has occurred:', Exception)
+        except Exception as e:
+            print('An ERROR has occurred:', str(e))
 
 
     def remove_book(self,ID):
@@ -59,7 +62,6 @@ class Books:
         """
 
         try:
-            self.conn  # Establishing connection to SQL server
             q = 'select * from Books where ID=?'
             self.cursor.execute(q, (ID,))
             found = self.cursor.fetchall()  # Looking & Getting the book's details with matching ID num
@@ -94,10 +96,8 @@ class Books:
                     else:
                         print('Invalid option. Try again:')
 
-            self.conn.close()  # Closing the connection with the server
-
-        except Exception:
-            print('An ERROR has occurred:', Exception)
+        except Exception as e:
+            print('An ERROR has occurred:', str(e))
 
 
     def find_book(self,title):
@@ -112,7 +112,6 @@ class Books:
         """
 
         try:
-            self.conn  # Establishing connection to SQL server
             q = ('select * from Books where title=?')
             self.cursor.execute(q, (title,))
             found = self.cursor.fetchall()  # Looking & Getting the book's details with the given title
@@ -127,10 +126,8 @@ class Books:
                     print("Book found:")
                     print(f'Book ID: {i[0]}, Title: {i[1]}, Author: {i[2]}, Publication Year: {i[3]}, Loan Type: {i[4]}')
 
-            self.conn.close()  # Closing the connection with the server
-
-        except Exception:
-            print('An ERROR has occurred:', Exception)
+        except Exception as e:
+            print('An ERROR has occurred:', str(e))
 
 
     def find_book_BY_ID(self,ID):
@@ -145,7 +142,6 @@ class Books:
         """
 
         try:
-            self.conn # Establishing connection to SQL server
             q = 'select * from Books where ID=?'
             self.cursor.execute(q, (ID,))
             found=self.cursor.fetchall()  # Looking & Getting the book's details with matching ID num
@@ -164,10 +160,8 @@ class Books:
 
                 return found  # Returns the book found
 
-            self.conn.close()  # Closing the connection with the server
-
-        except Exception:
-            print ('An ERROR has occurred:',Exception)
+        except Exception as e:
+            print('An ERROR has occurred:', str(e))
 
 
     def show_all_books(self):
@@ -180,7 +174,6 @@ class Books:
         """
 
         try:
-            self.conn  # Establishing connection to SQL server
             q = "Select * from Books"
             self.cursor.execute(q)
             books = self.cursor.fetchall() # Getting books data
@@ -195,7 +188,5 @@ class Books:
                 for i in books:
                     print(f'Book ID: {i[0]}, Title: {i[1]}, Author: {i[2]}, Publication Year: {i[3]}, Loan Type: {i[4]}')
 
-            self.conn.close()  # Closing the connection with the server
-
-        except Exception:
-            print('An ERROR has occurred:', Exception)
+        except Exception as e:
+            print('An ERROR has occurred:', str(e))

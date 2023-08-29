@@ -31,3 +31,5 @@ create table Loans
 )
 
 select * from Loans
+
+
