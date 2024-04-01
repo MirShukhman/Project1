@@ -1,5 +1,8 @@
+Book Library Manager
+
 Overview
-This project implements a simple Books Library Management System using a SQLite database. Designed as an educational tool for understanding database operations and object-oriented programming in Python, it features a basic Data Access Layer (DAL), unit tests, and a client application.
+
+This project implements a simple Books Library Management System using a Microsoft SQL Server Database. Designed as an educational tool for understanding database operations and object-oriented programming in Python, it features a basic Data Access Layer (DAL), unit tests, and a client application.
 
 The system manages books, customers, and loans, with functionalities to add, remove, and search for books and customers, manage loans, and track late returns.
 
