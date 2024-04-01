@@ -8,6 +8,7 @@ Features
 Microsoft SQL Server Database: Utilizes a simple database schema with three tables: Books, Customers, and Loans.
 
 Data Management using Python and ORM: Supports adding and removing books and customers, loaning books, and returning them.
+
 Search and Display: Enables finding books and customers by name, displaying all records, and listing late loans.
 
 This project was developed as part of Python Full Stack Development course, at John Bryce College. 
